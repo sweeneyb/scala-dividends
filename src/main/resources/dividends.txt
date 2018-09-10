@@ -1,0 +1,1 @@
+ex-date, type, cash amount, declaration date, record date, payment date
