@@ -22,6 +22,7 @@ val dtf = DateTimeFormatter.ofPattern("M/d/yyyy")
     return dividendList.toList
   }
 
+  // This is screaming for a generic function param of type "(List[String]) => A" where A is the generic type
     def loadQuotes(filename: String) : List[Quote] = {
     val bufferedSource = io.Source.fromFile(filename)
     var dividendList = new ListBuffer[Quote]()
@@ -38,4 +39,9 @@ val dtf = DateTimeFormatter.ofPattern("M/d/yyyy")
   val priceList = loadQuotes("./src/main/resources/agnc-prices.csv")
   println(divList.reverse.head.exDate + " " + divList.reverse.head.amount)
   println(priceList.reverse.head.date + " " + priceList.reverse.head.close)
+  val startingInvestment = priceList.reverse.head.close
+  val (_, withQuotes) = divList.partition(_.exDate.compareTo( priceList.reverse.head.date) < 0 )
+  val totalDividends = withQuotes.foldLeft(0.0) ((left, right) => left + right.amount)
+  println("starting investment: "+ priceList.reverse.head.close +" dividends: "+ totalDividends+" endValue: "+(totalDividends+priceList.head.close))
+  println("return: "+(priceList.reverse.head.close)/(totalDividends+priceList.head.close-priceList.reverse.head.close)*100+"%")
 }
