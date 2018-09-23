@@ -34,9 +34,13 @@ val dtf = DateTimeFormatter.ofPattern("M/d/yyyy")
     bufferedSource.close
     return dividendList.toList
   }
+
+  val ticker = if (args.length > 0)  args(0) else "agnc"
+
   
-  val divList = loadDividends("./src/main/resources/agnc-dividends.csv")
-  val priceList = loadQuotes("./src/main/resources/agnc-prices.csv")
+  
+  val divList = loadDividends("./src/main/resources/"+ticker+"-dividends.csv")
+  val priceList = loadQuotes("./src/main/resources/"+ticker+"-prices.csv")
   println(divList.reverse.head.exDate + " " + divList.reverse.head.amount)
   println(priceList.reverse.head.date + " " + priceList.reverse.head.close)
   val startingInvestment = priceList.reverse.head.close
